@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1168</width>
+    <height>541</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="LabelImage">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>40</y>
+      <width>721</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Image</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>800</x>
+      <y>50</y>
+      <width>351</width>
+      <height>451</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item row="11" column="0" colspan="3">
+      <widget class="QPlainTextEdit" name="EtLabel"/>
+     </item>
+     <item row="3" column="0">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="7" column="2">
+      <widget class="QPushButton" name="PtnNext">
+       <property name="text">
+        <string>下一张</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="BtnEnd">
+       <property name="text">
+        <string>结束标注</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QLineEdit" name="EtBRcoor"/>
+     </item>
+     <item row="2" column="2">
+      <widget class="QLineEdit" name="EtTRcoor"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="BtnStart">
+       <property name="text">
+        <string>开始标注</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="Labelcoor">
+       <property name="text">
+        <string>坐标</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLineEdit" name="EtBLcoor">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QPushButton" name="BtnPre">
+       <property name="text">
+        <string>上一张</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QPushButton" name="BtnRec">
+       <property name="text">
+        <string>预识别</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="2">
+      <widget class="QPushButton" name="BtnSave">
+       <property name="text">
+        <string>保存</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLineEdit" name="EtTLcoor">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="2">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>30</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="Labellabel">
+       <property name="text">
+        <string>标签</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>BtnStart</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>Start()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>864</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>883</x>
+     <y>14</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>BtnEnd</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>End()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1026</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1083</x>
+     <y>19</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>BtnPre</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>PrePic()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>875</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>PtnNext</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>NextPic()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1022</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>981</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>BtnRec</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>PreRec()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>814</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>791</x>
+     <y>254</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>BtnSave</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>Save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1002</x>
+     <y>251</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>983</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>Start()</slot>
+  <slot>End()</slot>
+  <slot>NextPic()</slot>
+  <slot>PrePic()</slot>
+  <slot>PreRec()</slot>
+  <slot>Save()</slot>
+ </slots>
+</ui>
