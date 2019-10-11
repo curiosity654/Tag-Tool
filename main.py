@@ -49,6 +49,7 @@ class window(QMainWindow, Ui_MainWindow):
                 pixmap = mat2pix(self.img)
                 self.LabelImage.setPixmap(pixmap)
                 self.start_flag = 1
+                self.LabelImage.label_start = 1
 
     def End(self):
         print('End.')

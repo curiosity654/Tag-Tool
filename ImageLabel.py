@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QPen, QGuiApplication
 from PyQt5.QtCore import QRect, QPoint, Qt, pyqtSignal, QObject
 import sys, cv2
@@ -18,6 +18,7 @@ class ImageLabel(QLabel):
     rect_num = 0
     signal = LabelSignal()
     first_img_flag = 0
+    label_start = 0
 
     def get_Coor(self, Point): # imporve to avoid coor exceed the pic
         Point = self.mapFromGlobal(Point)
@@ -36,6 +37,9 @@ class ImageLabel(QLabel):
         self.setCursor(Qt.ArrowCursor)
 
     def mousePressEvent(self, event):
+        if(self.label_start == 0):
+            QMessageBox.about(self,'提示','请选择文件夹')
+            return
         if(self.rect_num != 0):
             self.signal.newbox.emit()
         self.rect_num += 1
