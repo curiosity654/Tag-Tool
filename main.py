@@ -40,6 +40,9 @@ class window(QMainWindow, Ui_MainWindow):
                 if(not (img.strip('.jpg')+'.txt') in self.label_list): #jump to the first img that hasn't been tagged
                     break
                 self.image_cnt += 1
+                if(self.image_cnt == len(self.img_list)):
+                    QMessageBox.about(self,'提示','该文件夹下图片已标注完成')
+                    return
             self.img_name = self.pic_dir + '/' + self.img_list[self.image_cnt]
             print(self.img_name)
             self.img = cv2.imread(self.img_name)

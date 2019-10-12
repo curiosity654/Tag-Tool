@@ -1,3 +1,4 @@
 # Python:
 build
 __pycache__
+*.txt
