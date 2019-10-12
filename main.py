@@ -68,7 +68,7 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 self.image_cnt -= 1
                 self.img_name = self.pic_dir + '/' + self.img_list[self.image_cnt]
-                self.img = cv2.imread(self.img_name)
+                self.img, self.img_size = read_resize(self.img_name, self.label_size)
                 if(type(self.img) == type(None)):
                     QMessageBox.about(self,'提示','图片打开失败')
                 else:
@@ -77,6 +77,7 @@ class window(QMainWindow, Ui_MainWindow):
                     pixmap = mat2pix(self.img)
                     self.LabelImage.rect_num = 0
                     self.LabelImage.setPixmap(pixmap)
+                    self.EtLabel.setPlainText('')
                     self.saved_flag = 0
                 # print('PrePic.')
         else:
@@ -89,7 +90,7 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 self.image_cnt += 1
                 self.img_name = self.pic_dir + '/' + self.img_list[self.image_cnt]
-                self.img = cv2.imread(self.img_name)
+                self.img, self.img_size = read_resize(self.img_name, self.label_size)
                 if(type(self.img) == type(None)):
                     QMessageBox.about(self,'提示','图片打开失败')
                 else:
@@ -98,6 +99,7 @@ class window(QMainWindow, Ui_MainWindow):
                     pixmap = mat2pix(self.img)
                     self.LabelImage.rect_num = 0
                     self.LabelImage.setPixmap(pixmap)
+                    self.EtLabel.setPlainText('')
                     self.saved_flag = 0
                 # print('NextPic.')
         else:
@@ -107,10 +109,17 @@ class window(QMainWindow, Ui_MainWindow):
         print('PreRec.')
     
     def Save(self):
+        label = self.EtLabel.toPlainText()
+        if(len(label) == 0):
+            QMessageBox.about(self,'提示','请输入标签')
+            return
         self.resetEt()
+        if(len(self.LabelImage.rect_list) == 0):
+            QMessageBox.about(self,'提示','当前图片无可保存标注')
+            return
         with codecs.open(self.img_name.strip('.jpg')+'.txt', 'w', 'utf-8') as f:
             cnt = 0
-            print(self.LabelImage.rect_num)
+            print(str(self.LabelImage.rect_num)+" rects in total.")
             for cnt in range(self.LabelImage.rect_num):
                 # print(cnt)
                 rect = self.LabelImage.rect_list[cnt]
@@ -126,7 +135,7 @@ class window(QMainWindow, Ui_MainWindow):
                 P1_trans = coor_trans(P1, self.label_size, self.img_size)
                 P2_trans = coor_trans(P2, self.label_size, self.img_size)
                 P3_trans = coor_trans(P3, self.label_size, self.img_size)
-                print(width, height)
+                print("width:"+str(width) + " height:"+str(height))
                 coor = str(P0_trans[0]) + ',' + str(P0_trans[1]) + ',' + str(P1_trans[0]) + ',' + str(P1_trans[1]) + ',' + str(P2_trans[0]) + ',' + str(P2_trans[1]) + ',' + str(P3_trans[0]) + ',' + str(P3_trans[1])
                 f.write(coor + ' Wei ' + label +'\n')
         print('Save.')
@@ -148,13 +157,18 @@ class window(QMainWindow, Ui_MainWindow):
             label = self.EtLabel.toPlainText()
             if(len(label) == 0):
                 QMessageBox.about(self,'提示','请输入标签')
-                self.LabelImage.label_list.append('')
             else:
                 # print(label)
                 self.LabelImage.label_list.append(label)
                 self.EtLabel.setPlainText('')
         else:
             self.saved_flag = 0
+
+    def keyPressEvent(self, event):
+        super().keyPressEvent(event)
+        if(event.key() == Qt.Key_S):
+            if QApplication.keyboardModifiers() == Qt.ControlModifier:
+                self.Save()
 
 if __name__=='__main__':
     app = QApplication(sys.argv)

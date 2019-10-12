@@ -70,4 +70,5 @@ class ImageLabel(QLabel):
         painter.setPen(QPen(Qt.red,2,Qt.SolidLine))
         for rect in self.rect_list:
             painter.drawRect(rect)
-        painter.drawRect(rect_new)
+        if(self.mouse_flag):
+            painter.drawRect(rect_new)
