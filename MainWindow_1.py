@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,16 +12,16 @@ from ImageLabel import ImageLabel
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1380, 720)
+        MainWindow.resize(1280, 720)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         # self.LabelImage = QtWidgets.QLabel(self.centralwidget)
         self.LabelImage = ImageLabel(self.centralwidget)
-        self.LabelImage.setGeometry(QtCore.QRect(40, 30, 700, 480))
+        self.LabelImage.setGeometry(QtCore.QRect(90, 120, 700, 480))
         self.LabelImage.setAlignment(QtCore.Qt.AlignCenter)
         self.LabelImage.setObjectName("LabelImage")
         self.formLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(800, 50, 351, 451))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(860, 120, 381, 481))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.formLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -104,4 +104,5 @@ class Ui_MainWindow(object):
         self.BtnRec.setText(_translate("MainWindow", "预识别"))
         self.BtnSave.setText(_translate("MainWindow", "保存"))
         self.Labellabel.setText(_translate("MainWindow", "标签"))
+
 

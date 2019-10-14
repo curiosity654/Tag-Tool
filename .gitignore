@@ -1,4 +1,5 @@
 # Python:
 build
 __pycache__
-pic/*.txt
+pic
+PyQt535

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1373</width>
-    <height>617</height>
+    <height>607</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="LabelImage">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>60</y>
+      <x>240</x>
+      <y>50</y>
       <width>820</width>
       <height>500</height>
      </rect>
@@ -33,9 +33,9 @@
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>960</x>
-      <y>80</y>
-      <width>381</width>
+      <x>1070</x>
+      <y>60</y>
+      <width>281</width>
       <height>481</height>
      </rect>
     </property>
@@ -165,6 +165,16 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>191</width>
+      <height>500</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,16 +12,16 @@ from ImageLabel import ImageLabel
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1200, 600)
+        MainWindow.resize(1373, 607)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         # self.LabelImage = QtWidgets.QLabel(self.centralwidget)
         self.LabelImage = ImageLabel(self.centralwidget)
-        self.LabelImage.setGeometry(QtCore.QRect(40, 30, 700, 480))
+        self.LabelImage.setGeometry(QtCore.QRect(240, 50, 820, 500))
         self.LabelImage.setAlignment(QtCore.Qt.AlignCenter)
         self.LabelImage.setObjectName("LabelImage")
         self.formLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(800, 50, 351, 451))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(1070, 60, 281, 481))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.formLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -78,6 +78,9 @@ class Ui_MainWindow(object):
         self.Labellabel = QtWidgets.QLabel(self.formLayoutWidget)
         self.Labellabel.setObjectName("Labellabel")
         self.gridLayout.addWidget(self.Labellabel, 9, 0, 1, 1)
+        self.listWidget = QtWidgets.QListWidget(self.centralwidget)
+        self.listWidget.setGeometry(QtCore.QRect(30, 50, 191, 500))
+        self.listWidget.setObjectName("listWidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -104,4 +107,5 @@ class Ui_MainWindow(object):
         self.BtnRec.setText(_translate("MainWindow", "预识别"))
         self.BtnSave.setText(_translate("MainWindow", "保存"))
         self.Labellabel.setText(_translate("MainWindow", "标签"))
+
 

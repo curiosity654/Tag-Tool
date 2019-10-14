@@ -7,19 +7,20 @@ import numpy as np
 from utils import *
 from ImageLabel import LabelSignal
 import codecs
+from LabelItem import Label
 
 class window(QMainWindow, Ui_MainWindow):
     
     pic_dir = ""
     img_name = ""
     img = np.zeros(1)
-    img_size = (0,0)
-    label_size = (0,0)
     img_list = []
     label_list = []
     image_cnt = 0
     start_flag = 0
     saved_flag = 0
+    img_size = (0,0)
+    label_size = (0,0)
     
     def __init__(self):
         super(window, self).__init__()
@@ -38,6 +39,7 @@ class window(QMainWindow, Ui_MainWindow):
         if(len(self.img_list) == 0):
             QMessageBox.about(self,'提示','未找到图片')
         else:
+            self.image_cnt = 0
             for img in self.img_list:
                 if(not (img.strip('.jpg')+'.txt') in self.label_list): #jump to the first img that hasn't been tagged
                     break
@@ -49,6 +51,7 @@ class window(QMainWindow, Ui_MainWindow):
             print(self.img_name)
             self.label_size = (self.LabelImage.size().width(), self.LabelImage.size().height())
             self.img, self.img_size = read_resize(self.img_name, self.label_size)
+            print(self.label_size, self.img_size)
             # self.img = cv2.imread(self.img_name)
             if(type(self.img) == type(None)):
                 QMessageBox.about(self,'提示','图片打开失败')
@@ -68,7 +71,7 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 self.image_cnt -= 1
                 self.img_name = self.pic_dir + '/' + self.img_list[self.image_cnt]
-                self.img, self.img_size = read_resize(self.img_name, self.label_size)
+                self.img, img_size = read_resize(self.img_name, self.label_size)
                 if(type(self.img) == type(None)):
                     QMessageBox.about(self,'提示','图片打开失败')
                 else:
@@ -90,7 +93,7 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 self.image_cnt += 1
                 self.img_name = self.pic_dir + '/' + self.img_list[self.image_cnt]
-                self.img, self.img_size = read_resize(self.img_name, self.label_size)
+                self.img, img_size = read_resize(self.img_name, self.label_size)
                 if(type(self.img) == type(None)):
                     QMessageBox.about(self,'提示','图片打开失败')
                 else:
@@ -127,17 +130,19 @@ class window(QMainWindow, Ui_MainWindow):
                 P0 = (rect.x(), rect.y())
                 width = rect.width()
                 height = rect.height()
-                P1 = (P0[0]+width, P0[1])
-                P2 = (P0[0], P0[1]+height)
-                P3 = (P0[0]+width, P0[1]+height)
+                label_item = Label(P0, width, height, label, self.label_size, self.img_size)
+                label_item.tofile(f)
+                # P1 = (P0[0]+width, P0[1])
+                # P2 = (P0[0], P0[1]+height)
+                # P3 = (P0[0]+width, P0[1]+height)
 
-                P0_trans = coor_trans(P0, self.label_size, self.img_size)
-                P1_trans = coor_trans(P1, self.label_size, self.img_size)
-                P2_trans = coor_trans(P2, self.label_size, self.img_size)
-                P3_trans = coor_trans(P3, self.label_size, self.img_size)
-                print("width:"+str(width) + " height:"+str(height))
-                coor = str(P0_trans[0]) + ',' + str(P0_trans[1]) + ',' + str(P1_trans[0]) + ',' + str(P1_trans[1]) + ',' + str(P2_trans[0]) + ',' + str(P2_trans[1]) + ',' + str(P3_trans[0]) + ',' + str(P3_trans[1])
-                f.write(coor + ' Wei ' + label +'\n')
+                # P0_trans = coor_trans(P0, label_size, img_size)
+                # P1_trans = coor_trans(P1, label_size, img_size)
+                # P2_trans = coor_trans(P2, label_size, img_size)
+                # P3_trans = coor_trans(P3, label_size, img_size)
+                # print("width:"+str(width) + " height:"+str(height))
+                # coor = str(P0_trans[0]) + ',' + str(P0_trans[1]) + ',' + str(P1_trans[0]) + ',' + str(P1_trans[1]) + ',' + str(P2_trans[0]) + ',' + str(P2_trans[1]) + ',' + str(P3_trans[0]) + ',' + str(P3_trans[1])
+                # f.write(coor + ' Wei ' + label +'\n')
         print('Save.')
         self.saved_flag = 1
 
