@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ImageLabel import ImageLabel
+from ListBox import ListBox
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -78,7 +79,7 @@ class Ui_MainWindow(object):
         self.Labellabel = QtWidgets.QLabel(self.formLayoutWidget)
         self.Labellabel.setObjectName("Labellabel")
         self.gridLayout.addWidget(self.Labellabel, 9, 0, 1, 1)
-        self.listWidget = QtWidgets.QListWidget(self.centralwidget)
+        self.listWidget = ListBox(self.centralwidget)
         self.listWidget.setGeometry(QtCore.QRect(30, 50, 191, 500))
         self.listWidget.setObjectName("listWidget")
         MainWindow.setCentralWidget(self.centralwidget)

@@ -1,4 +1,4 @@
-from MainWindow import *
+from MainWindow_2 import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QPen, QGuiApplication
 from PyQt5.QtCore import QRect, QPoint, Qt, pyqtSignal, QObject
@@ -56,6 +56,7 @@ class window(QMainWindow, Ui_MainWindow):
             if(type(self.img) == type(None)):
                 QMessageBox.about(self,'提示','图片打开失败')
             else:
+                self.window().listWidget.Load_data(self.img_name.strip('.jpg'+'.txt'), self.label_size, self.img_size)
                 pixmap = mat2pix(self.img)
                 self.LabelImage.setPixmap(pixmap)
                 self.start_flag = 1
@@ -77,6 +78,7 @@ class window(QMainWindow, Ui_MainWindow):
                 else:
                     self.LabelImage.rect_list = []
                     self.LabelImage.label_list = []
+                    self.window().listWidget.Load_data(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
                     pixmap = mat2pix(self.img)
                     self.LabelImage.rect_num = 0
                     self.LabelImage.setPixmap(pixmap)
@@ -99,6 +101,7 @@ class window(QMainWindow, Ui_MainWindow):
                 else:
                     self.LabelImage.rect_list = []
                     self.LabelImage.label_list = []
+                    self.window().listWidget.Load_data(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
                     pixmap = mat2pix(self.img)
                     self.LabelImage.rect_num = 0
                     self.LabelImage.setPixmap(pixmap)
@@ -124,25 +127,14 @@ class window(QMainWindow, Ui_MainWindow):
             cnt = 0
             print(str(self.LabelImage.rect_num)+" rects in total.")
             for cnt in range(self.LabelImage.rect_num):
-                # print(cnt)
                 rect = self.LabelImage.rect_list[cnt]
                 label = self.LabelImage.label_list[cnt]
                 P0 = (rect.x(), rect.y())
                 width = rect.width()
                 height = rect.height()
-                label_item = Label(P0, width, height, label, self.label_size, self.img_size)
+                label_item = Label()
+                label_item.init1(P0, width, height, label, self.label_size, self.img_size)
                 label_item.tofile(f)
-                # P1 = (P0[0]+width, P0[1])
-                # P2 = (P0[0], P0[1]+height)
-                # P3 = (P0[0]+width, P0[1]+height)
-
-                # P0_trans = coor_trans(P0, label_size, img_size)
-                # P1_trans = coor_trans(P1, label_size, img_size)
-                # P2_trans = coor_trans(P2, label_size, img_size)
-                # P3_trans = coor_trans(P3, label_size, img_size)
-                # print("width:"+str(width) + " height:"+str(height))
-                # coor = str(P0_trans[0]) + ',' + str(P0_trans[1]) + ',' + str(P1_trans[0]) + ',' + str(P1_trans[1]) + ',' + str(P2_trans[0]) + ',' + str(P2_trans[1]) + ',' + str(P3_trans[0]) + ',' + str(P3_trans[1])
-                # f.write(coor + ' Wei ' + label +'\n')
         print('Save.')
         self.saved_flag = 1
 
