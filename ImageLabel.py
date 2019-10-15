@@ -14,6 +14,7 @@ class ImageLabel(QLabel):
     TL_point = QPoint(0, 0)
     BR_point = QPoint(0, 0)
     rect_list = []
+    string_list = []
     label_list = []
     rect_num = 0
     signal = LabelSignal()
@@ -72,3 +73,13 @@ class ImageLabel(QLabel):
             painter.drawRect(rect)
         if(self.mouse_flag):
             painter.drawRect(rect_new)
+
+    def loadLabels(self):
+        if(len(self.label_list) != 0):
+            for label in self.label_list:
+                p0 = QPoint(label.P0[0], label.P0[1])
+                p1 = QPoint(label.P3[0], label.P3[1])
+                rect = QRect(p0,p1)
+                self.rect_list.append(rect)
+                self.string_list.append(label.label)
+        self.update()

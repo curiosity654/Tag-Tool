@@ -1,13 +1,13 @@
 from utils import coor_trans
 
 class Label:
-    def init1(self, _P0, _width, _height, _label, _label_size, _img_size):
-        self.P0 = _P0
-        self.width = _width
-        self.height = _height
-        self.P1 = [_P0[0]+_width, _P0[1]]
-        self.P2 = [_P0[0], _P0[1]+_height]
-        self.P3 = [_P0[0]+_width, _P0[1]+_height]
+    def init1(self, _rect, _label, _label_size, _img_size):
+        self.P0 = (_rect.x(), _rect.y())
+        self.width = _rect.width()
+        self.height = _rect.height()
+        self.P1 = [self.P0[0]+self.width, self.P0[1]]
+        self.P2 = [self.P0[0], self.P0[1]+self.height]
+        self.P3 = [self.P0[0]+self.width, self.P0[1]+self.height]
         self.P0_trans = coor_trans(self.P0, _label_size, _img_size)
         self.P1_trans = coor_trans(self.P1, _label_size, _img_size)
         self.P2_trans = coor_trans(self.P2, _label_size, _img_size)
