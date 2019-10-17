@@ -5,7 +5,6 @@ from PyQt5.QtCore import QRect, QPoint, Qt, pyqtSignal, QObject
 import sys, cv2
 import numpy as np
 from utils import *
-from Signals import Signals
 import codecs
 from LabelItem import Label
 
@@ -30,7 +29,6 @@ class window(QMainWindow, Ui_MainWindow):
         self.LabelImage.label_list = []
         self.LabelImage.signal.mousemove.connect(self.setCoor)
         self.LabelImage.signal.newbox.connect(self.resetEt)
-        self.listWidget.signal = Signals()
         self.listWidget.itemClicked.connect(self.labelClicked)
         self.window().EditMode.clicked.connect(self.LabelImage.Edit)
 
