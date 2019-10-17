@@ -24,9 +24,9 @@ class Label:
         self.P1 = coor_trans(self.P1_trans, _img_size, _label_size)
         self.P2 = coor_trans(self.P2_trans, _img_size, _label_size)
         self.P3 = coor_trans(self.P3_trans, _img_size, _label_size)
-        self.label = self.str_list[10]
+        self.label = self.str_list[9]
 
     def tofile(self, file):
         print("width:"+str(self.width) + " height:"+str(self.height))
         coor = str(self.P0_trans[0]) + ',' + str(self.P0_trans[1]) + ',' + str(self.P1_trans[0]) + ',' + str(self.P1_trans[1]) + ',' + str(self.P2_trans[0]) + ',' + str(self.P2_trans[1]) + ',' + str(self.P3_trans[0]) + ',' + str(self.P3_trans[1]) + ','
-        file.write(coor + ',Wei,' + self.label +'\n')
+        file.write(coor + 'Wei,' + self.label +'\n')

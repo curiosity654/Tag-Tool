@@ -5,7 +5,7 @@ from PyQt5.QtCore import QRect, QPoint, Qt, pyqtSignal, QObject
 import sys, cv2
 import numpy as np
 from utils import *
-from ImageLabel import LabelSignal
+from Signals import Signals
 import codecs
 from LabelItem import Label
 
@@ -14,22 +14,25 @@ class window(QMainWindow, Ui_MainWindow):
     pic_dir = ""
     img_name = ""
     img = np.zeros(1)
-    img_files = []
-    label_files = []
-    label_list = []
+    img_files = []              # 选中路径下图片文件名列表
+    label_files = []            # 选中路径下标签文件名列表       
     image_cnt = 0
     start_flag = 0
     saved_flag = 0
     img_size = (0,0)
     label_size = (0,0)
+    edit_mode = False
     
     def __init__(self):
         super(window, self).__init__()
         self.setupUi(self)
-        self.setWindowTitle('TagTool')
+        self.setWindowTitle('TagTool-标记模式')
         self.LabelImage.label_list = []
         self.LabelImage.signal.mousemove.connect(self.setCoor)
         self.LabelImage.signal.newbox.connect(self.resetEt)
+        self.listWidget.signal = Signals()
+        self.listWidget.itemClicked.connect(self.labelClicked)
+        self.window().EditMode.clicked.connect(self.LabelImage.Edit)
 
     def Start(self):
         self.pic_dir = QFileDialog.getExistingDirectory(self, '选择图片文件夹', "./")
@@ -42,13 +45,16 @@ class window(QMainWindow, Ui_MainWindow):
             QMessageBox.about(self,'提示','未找到图片')
         else:
             self.image_cnt = 0
-            for img in self.img_files:
-                if(not (img.strip('.jpg')+'.txt') in self.label_files): #jump to the first img that hasn't been tagged
-                    break
-                self.image_cnt += 1
-                if(self.image_cnt == len(self.img_files)):
-                    QMessageBox.about(self,'提示','该文件夹下图片已标注完成')
-                    return
+
+            #jump to the first img that hasn't been tagged
+            # for img in self.img_files:
+            #     if(not (img.strip('.jpg')+'.txt') in self.label_files): 
+            #         break
+            #     self.image_cnt += 1
+            #     if(self.image_cnt == len(self.img_files)):
+            #         QMessageBox.about(self,'提示','该文件夹下图片已标注完成')
+            #         return
+
             self.img_name = self.pic_dir + '/' + self.img_files[self.image_cnt]
             print(self.img_name)
             self.label_size = (self.LabelImage.size().width(), self.LabelImage.size().height())
@@ -57,17 +63,26 @@ class window(QMainWindow, Ui_MainWindow):
             if(type(self.img) == type(None)):
                 QMessageBox.about(self,'提示','图片打开失败')
             else:
-                self.label_list = self.window().listWidget.Load_data(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
-                self.LabelImage.label_list = self.label_list
-                print(self.label_list)
+                self.LabelImage.label_list = self.window().listWidget.Load_data2(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
                 self.LabelImage.loadLabels()
                 pixmap = mat2pix(self.img)
                 self.LabelImage.setPixmap(pixmap)
                 self.start_flag = 1
                 self.LabelImage.label_start = 1
 
-    def End(self):
-        print('End.')
+    def Edit(self):
+        if(self.start_flag):
+            self.edit_mode = not self.edit_mode
+            print(self.edit_mode)
+            if(self.edit_mode):
+                self.setWindowTitle('TagTool-编辑模式')
+                self.LabelImage.update()
+            else:
+                self.setWindowTitle('TagTool-标记模式')
+                self.LabelImage.update()
+            print('Edit Mode.')
+        else:
+            QMessageBox.about(self,'提示','请选择文件夹')
 
     def PrePic(self):
         if(self.start_flag):
@@ -76,13 +91,14 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 self.image_cnt -= 1
                 self.img_name = self.pic_dir + '/' + self.img_files[self.image_cnt]
-                self.img, img_size = read_resize(self.img_name, self.label_size)
+                self.img, self.img_size = read_resize(self.img_name, self.label_size)
                 if(type(self.img) == type(None)):
                     QMessageBox.about(self,'提示','图片打开失败')
                 else:
-                    self.label_list = self.window().listWidget.Load_data(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
-                    self.LabelImage.label_list = self.label_list
-                    print(self.label_list)
+                    self.LabelImage.label_list = []
+                    self.LabelImage.rect_list = []
+                    self.LabelImage.string_list = []
+                    self.LabelImage.label_list = self.window().listWidget.Load_data2(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
                     self.LabelImage.loadLabels()
                     pixmap = mat2pix(self.img)
                     self.LabelImage.rect_num = 0
@@ -100,18 +116,19 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 self.image_cnt += 1
                 self.img_name = self.pic_dir + '/' + self.img_files[self.image_cnt]
-                self.img, img_size = read_resize(self.img_name, self.label_size)
+                self.img, self.img_size = read_resize(self.img_name, self.label_size)
                 if(type(self.img) == type(None)):
                     QMessageBox.about(self,'提示','图片打开失败')
                 else:
                     self.LabelImage.rect_list = []
                     self.LabelImage.string_list = []
-                    self.window().listWidget.Load_data(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
+                    self.LabelImage.label_list = self.window().listWidget.Load_data2(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
+                    self.LabelImage.loadLabels()
                     pixmap = mat2pix(self.img)
                     self.LabelImage.rect_num = 0
                     self.LabelImage.setPixmap(pixmap)
                     self.EtLabel.setPlainText('')
-                    self.img_listsaved_flag = 0
+                    self.saved_flag = 0
                 # print('NextPic.')
         else:
             QMessageBox.about(self,'提示','请选择文件夹')
@@ -130,15 +147,17 @@ class window(QMainWindow, Ui_MainWindow):
             return
         with codecs.open(self.img_name.strip('.jpg')+'.txt', 'w', 'utf-8') as f:
             cnt = 0
-            print(str(self.LabelImage.rect_num)+" rects in total.")
-            for cnt in range(self.LabelImage.rect_num):
+            print(str(len(self.LabelImage.rect_list))+" rects in total.")
+            for cnt in range(len(self.LabelImage.rect_list)):
                 rect = self.LabelImage.rect_list[cnt]
                 label = self.LabelImage.string_list[cnt]
                 label_item = Label()
                 label_item.init1(rect, label, self.label_size, self.img_size)
                 label_item.tofile(f)
         print('Save.')
-        self.saved_flag = 1
+        self.LabelImage.update()
+        self.window().listWidget.Load_data2(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
+        # self.saved_flag = 1
 
     def setCoor(self):
         x0 = self.LabelImage.TL_point.x
@@ -158,8 +177,13 @@ class window(QMainWindow, Ui_MainWindow):
                 QMessageBox.about(self,'提示','请输入标签')
             else:
                 # print(label)
-                self.LabelImage.string_list.append(label)
-                self.EtLabel.setPlainText('')
+                if(self.edit_mode):
+                    self.LabelImage.string_list[self.LabelImage.clicked_label] = label
+                else:
+                    self.LabelImage.string_list.append(label)
+                if(not self.edit_mode):
+                    self.EtLabel.setPlainText('')
+                self.window().listWidget.Load_data1(self.LabelImage.rect_list, self.LabelImage.string_list, self.label_size, self.img_size)
         else:
             self.saved_flag = 0
 
@@ -168,6 +192,15 @@ class window(QMainWindow, Ui_MainWindow):
         if(event.key() == Qt.Key_S):
             if QApplication.keyboardModifiers() == Qt.ControlModifier:
                 self.Save()
+
+    def labelClicked(self, item):
+        if(self.edit_mode):
+            for i in range(len(self.LabelImage.label_list)):
+                if(item.text() == self.LabelImage.label_list[i].label):
+                    self.LabelImage.clicked_label = i
+                    self.EtLabel.setPlainText(self.LabelImage.label_list[i].label)
+                    print('item '+item.text()+' clicked.')
+                    self.LabelImage.update()
 
 if __name__=='__main__':
     app = QApplication(sys.argv)

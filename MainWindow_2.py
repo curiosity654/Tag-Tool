@@ -36,9 +36,9 @@ class Ui_MainWindow(object):
         self.PtnNext = QtWidgets.QPushButton(self.formLayoutWidget)
         self.PtnNext.setObjectName("PtnNext")
         self.gridLayout.addWidget(self.PtnNext, 7, 2, 1, 1)
-        self.BtnEnd = QtWidgets.QPushButton(self.formLayoutWidget)
-        self.BtnEnd.setObjectName("BtnEnd")
-        self.gridLayout.addWidget(self.BtnEnd, 0, 2, 1, 1)
+        self.EditMode = QtWidgets.QPushButton(self.formLayoutWidget)
+        self.EditMode.setObjectName("EditMode")
+        self.gridLayout.addWidget(self.EditMode, 0, 2, 1, 1)
         self.EtBRcoor = QtWidgets.QLineEdit(self.formLayoutWidget)
         self.EtBRcoor.setObjectName("EtBRcoor")
         self.gridLayout.addWidget(self.EtBRcoor, 5, 2, 1, 1)
@@ -80,6 +80,13 @@ class Ui_MainWindow(object):
         self.Labellabel.setObjectName("Labellabel")
         self.gridLayout.addWidget(self.Labellabel, 9, 0, 1, 1)
         self.listWidget = ListBox(self.centralwidget)
+
+        # 字体增大
+        font = QtGui.QFont()
+        font.setPointSize(16);
+        font.setWeight(50);
+        self.setFont(font)
+
         self.listWidget.setGeometry(QtCore.QRect(30, 50, 191, 500))
         self.listWidget.setObjectName("listWidget")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -89,7 +96,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.BtnStart.clicked.connect(MainWindow.Start)
-        self.BtnEnd.clicked.connect(MainWindow.End)
+        self.EditMode.clicked.connect(MainWindow.Edit)
         self.BtnPre.clicked.connect(MainWindow.PrePic)
         self.PtnNext.clicked.connect(MainWindow.NextPic)
         self.BtnRec.clicked.connect(MainWindow.PreRec)
@@ -101,7 +108,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.LabelImage.setText(_translate("MainWindow", "Image"))
         self.PtnNext.setText(_translate("MainWindow", "下一张"))
-        self.BtnEnd.setText(_translate("MainWindow", "结束标注"))
+        self.EditMode.setText(_translate("MainWindow", "编辑模式"))
         self.BtnStart.setText(_translate("MainWindow", "开始标注"))
         self.Labelcoor.setText(_translate("MainWindow", "坐标"))
         self.BtnPre.setText(_translate("MainWindow", "上一张"))
