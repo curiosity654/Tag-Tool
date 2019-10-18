@@ -7,6 +7,7 @@ import numpy as np
 from utils import *
 import codecs
 from LabelItem import Label
+import os.path
 
 class window(QMainWindow, Ui_MainWindow):
     
@@ -70,15 +71,21 @@ class window(QMainWindow, Ui_MainWindow):
 
     def Edit(self):
         if(self.start_flag):
-            self.edit_mode = not self.edit_mode
             print(self.edit_mode)
-            if(self.edit_mode):
-                self.setWindowTitle('TagTool-编辑模式')
-                self.LabelImage.update()
+            if(not self.edit_mode):
+                file_name = self.img_name.strip('.jpg')+'.txt'
+                if(not os.path.isfile(file_name)):
+                    QMessageBox.about(self,'提示','当前图片未标注，无法进入编辑模式')
+                    return
+                else:
+                    self.edit_mode = True
+                    self.setWindowTitle('TagTool-编辑模式')
+                    self.LabelImage.update()
             else:
+                self.edit_mode = False
                 self.setWindowTitle('TagTool-标记模式')
                 self.LabelImage.update()
-            print('Edit Mode.')
+            
         else:
             QMessageBox.about(self,'提示','请选择文件夹')
 
@@ -190,6 +197,12 @@ class window(QMainWindow, Ui_MainWindow):
         if(event.key() == Qt.Key_S):
             if QApplication.keyboardModifiers() == Qt.ControlModifier:
                 self.Save()
+        if(event.key() == Qt.Key_A):
+            if QApplication.keyboardModifiers() == Qt.ControlModifier:
+                self.PrePic()
+        if(event.key() == Qt.Key_D):
+            if QApplication.keyboardModifiers() == Qt.ControlModifier:
+                self.NextPic()
 
     def labelClicked(self, item):
         if(self.edit_mode):
