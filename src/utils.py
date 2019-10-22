@@ -5,7 +5,7 @@ def read_resize(path, size):
     img = cv2.imread(path)
     if(type(img) == type(None)):
         return None
-    img_size = (img.shape[0], img.shape[1])
+    img_size = (img.shape[1], img.shape[0])
     img = cv2.resize(img, size)
     return img, img_size
 
