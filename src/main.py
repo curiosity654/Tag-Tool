@@ -68,6 +68,7 @@ class window(QMainWindow, Ui_MainWindow):
                 self.LabelImage.setPixmap(pixmap)
                 self.start_flag = 1
                 self.LabelImage.label_start = 1
+                self.LabelImage.flag_delete = 0;
 
     def Edit(self):
         if(self.start_flag):
@@ -110,6 +111,8 @@ class window(QMainWindow, Ui_MainWindow):
                     self.LabelImage.setPixmap(pixmap)
                     self.EtLabel.setPlainText('')
                     self.saved_flag = 0
+                    self.LabelImage.clicked_label = 0
+                    self.LabelImage.flag_delete = 0;
                 # print('PrePic.')
         else:
             QMessageBox.about(self,'提示','请选择文件夹')
@@ -134,22 +137,39 @@ class window(QMainWindow, Ui_MainWindow):
                     self.LabelImage.setPixmap(pixmap)
                     self.EtLabel.setPlainText('')
                     self.saved_flag = 0
+                    self.LabelImage.clicked_label = 0
+                    self.LabelImage.flag_delete = 0
                 # print('NextPic.')
         else:
             QMessageBox.about(self,'提示','请选择文件夹')
 
-    def PreRec(self):
-        print('PreRec.')
+    def DeleteItem(self):
+        print('DeleteItem.')
+        if(self.LabelImage.edit_mode):
+            for i in range(self.listWidget.count()):
+                    if(self.listWidget.item(i).isSelected()):
+                        del self.LabelImage.rect_list[i]
+                        del self.LabelImage.string_list[i]
+                        deletelistitem = self.window().listWidget.item(i)
+                        self.window().listWidget.takeItem(self.window().listWidget.row(deletelistitem))
+                        self.LabelImage.rect_num -= 1
+                        self.LabelImage.clicked_label = 0
+                        self.LabelImage.update()
+                        return
+            self.LabelImage.flag_delete = 1;
+        else:
+            QMessageBox.about(self,'提示','请在编辑模式下删除标签')
     
     def Save(self):
         label = self.EtLabel.toPlainText()
         if(len(label) == 0):
             QMessageBox.about(self,'提示','请输入标签')
             return
-        self.resetEt()
-        if(len(self.LabelImage.rect_list) == 0):
-            QMessageBox.about(self,'提示','当前图片无可保存标注')
-            return
+        if(not self.LabelImage.flag_delete):
+            self.resetEt()
+            if(len(self.LabelImage.rect_list) == 0):
+                QMessageBox.about(self,'提示','当前图片无可保存标注')
+                return
         with codecs.open(self.img_name.strip('.jpg')+'.txt', 'w', 'utf-8') as f:
             cnt = 0
             print(str(len(self.LabelImage.rect_list))+" rects in total.")
@@ -160,6 +180,7 @@ class window(QMainWindow, Ui_MainWindow):
                 label_item.init1(rect, label, self.label_size, self.img_size)
                 label_item.tofile(f)
         print('Save.')
+        self.LabelImage.flag_delete = 0;
         self.LabelImage.update()
         self.window().listWidget.Load_data2(self.img_name.strip('.jpg')+'.txt', self.label_size, self.img_size)
         # self.saved_flag = 1
@@ -183,6 +204,9 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 # print(label)
                 if(self.edit_mode):
+                    if(len(self.rect_list) == 0):
+                        QMessageBox.about(self,'提示','当前图片无可修改标注，请在标注模式下标注')
+                        return
                     self.LabelImage.string_list[self.LabelImage.clicked_label] = label
                 else:
                     self.LabelImage.string_list.append(label)
@@ -206,12 +230,13 @@ class window(QMainWindow, Ui_MainWindow):
 
     def labelClicked(self, item):
         if(self.edit_mode):
-            for i in range(len(self.LabelImage.label_list)):
-                if(item.text() == self.LabelImage.label_list[i].label):
+            for i in range(self.listWidget.count()):
+                if(self.listWidget.item(i).isSelected()):
                     self.LabelImage.clicked_label = i
                     self.EtLabel.setPlainText(self.LabelImage.label_list[i].label)
                     print('item '+item.text()+' clicked.')
                     self.LabelImage.update()
+                    return
 
 if __name__=='__main__':
     app = QApplication(sys.argv)

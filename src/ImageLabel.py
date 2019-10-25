@@ -22,6 +22,7 @@ class ImageLabel(QLabel):
     first_img_flag = 0
     label_start = 0
     edit_mode = 0
+    flag_delete = 0
 
     def get_Coor(self, Point): # imporve to avoid coor exceed the pic
         Point = self.mapFromGlobal(Point)
@@ -46,7 +47,7 @@ class ImageLabel(QLabel):
             return
         if(self.rect_num != 0):
             self.signal.newbox.emit()
-        if(~self.edit_mode):
+        if(not self.edit_mode):
             self.rect_num += 1
         self.mouse_flag = True
         self.TL_point = event.globalPos()

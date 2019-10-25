@@ -99,7 +99,7 @@ class Ui_MainWindow(object):
         self.EditMode.clicked.connect(MainWindow.Edit)
         self.BtnPre.clicked.connect(MainWindow.PrePic)
         self.PtnNext.clicked.connect(MainWindow.NextPic)
-        self.BtnRec.clicked.connect(MainWindow.PreRec)
+        self.BtnRec.clicked.connect(MainWindow.DeleteItem)
         self.BtnSave.clicked.connect(MainWindow.Save)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -112,7 +112,7 @@ class Ui_MainWindow(object):
         self.BtnStart.setText(_translate("MainWindow", "开始标注"))
         self.Labelcoor.setText(_translate("MainWindow", "坐标"))
         self.BtnPre.setText(_translate("MainWindow", "上一张"))
-        self.BtnRec.setText(_translate("MainWindow", "预识别"))
+        self.BtnRec.setText(_translate("MainWindow", "删除"))
         self.BtnSave.setText(_translate("MainWindow", "保存"))
         self.Labellabel.setText(_translate("MainWindow", "标签"))
 
