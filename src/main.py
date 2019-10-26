@@ -34,10 +34,11 @@ class window(QMainWindow, Ui_MainWindow):
         self.window().EditMode.clicked.connect(self.LabelImage.Edit)
 
     def Start(self):
-        self.pic_dir = QFileDialog.getExistingDirectory(self, '选择图片文件夹', "./")
-        if(self.pic_dir == ''):
+        pic_dir = QFileDialog.getExistingDirectory(self, '选择图片文件夹', "./")
+        if(pic_dir == ''):
             QMessageBox.about(self,'提示','请选择路径')
             return
+        self.pic_dir = pic_dir
         self.img_files = get_images(self.pic_dir)
         self.label_files = get_labels(self.pic_dir)
         if(len(self.img_files) == 0):
@@ -111,7 +112,7 @@ class window(QMainWindow, Ui_MainWindow):
                     self.LabelImage.setPixmap(pixmap)
                     self.EtLabel.setPlainText('')
                     self.saved_flag = 0
-                    self.LabelImage.clicked_label = 0
+                    self.LabelImage.clicked_label = -1
                     self.LabelImage.flag_delete = 0;
                 # print('PrePic.')
         else:
@@ -137,15 +138,17 @@ class window(QMainWindow, Ui_MainWindow):
                     self.LabelImage.setPixmap(pixmap)
                     self.EtLabel.setPlainText('')
                     self.saved_flag = 0
-                    self.LabelImage.clicked_label = 0
+                    self.LabelImage.clicked_label = -1
                     self.LabelImage.flag_delete = 0
                 # print('NextPic.')
         else:
             QMessageBox.about(self,'提示','请选择文件夹')
 
     def DeleteItem(self):
-        print('DeleteItem.')
         if(self.LabelImage.edit_mode):
+            if(self.LabelImage.clicked_label == -1):
+                QMessageBox.about(self,'提示','请选择标签')
+                return
             for i in range(self.listWidget.count()):
                     if(self.listWidget.item(i).isSelected()):
                         del self.LabelImage.rect_list[i]
@@ -153,8 +156,9 @@ class window(QMainWindow, Ui_MainWindow):
                         deletelistitem = self.window().listWidget.item(i)
                         self.window().listWidget.takeItem(self.window().listWidget.row(deletelistitem))
                         self.LabelImage.rect_num -= 1
-                        self.LabelImage.clicked_label = 0
+                        self.LabelImage.clicked_label = -1
                         self.LabelImage.update()
+                        print('DeleteItem.')
                         return
             self.LabelImage.flag_delete = 1;
         else:
@@ -204,7 +208,7 @@ class window(QMainWindow, Ui_MainWindow):
             else:
                 # print(label)
                 if(self.edit_mode):
-                    if(len(self.rect_list) == 0):
+                    if(len(self.LabelImage.rect_list) == 0):
                         QMessageBox.about(self,'提示','当前图片无可修改标注，请在标注模式下标注')
                         return
                     self.LabelImage.string_list[self.LabelImage.clicked_label] = label
@@ -233,7 +237,7 @@ class window(QMainWindow, Ui_MainWindow):
             for i in range(self.listWidget.count()):
                 if(self.listWidget.item(i).isSelected()):
                     self.LabelImage.clicked_label = i
-                    self.EtLabel.setPlainText(self.LabelImage.label_list[i].label)
+                    self.EtLabel.setPlainText(self.LabelImage.string_list[i])
                     print('item '+item.text()+' clicked.')
                     self.LabelImage.update()
                     return

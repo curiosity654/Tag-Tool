@@ -16,7 +16,7 @@ class ImageLabel(QLabel):
     rect_list = []
     string_list = []
     label_list = []             # LabelItem 类的对象列表，用于保存
-    clicked_label = 0
+    clicked_label = -1
     rect_num = 0
     signal = Signals()
     first_img_flag = 0
@@ -81,7 +81,7 @@ class ImageLabel(QLabel):
         painter.setPen(QPen(Qt.red,2,Qt.SolidLine))
         for rect in self.rect_list:
             painter.drawRect(rect)
-        if(self.edit_mode):
+        if(self.edit_mode and self.clicked_label != -1):
             if(len(self.rect_list)>0):
                 print(self.clicked_label)
                 painter.setPen(QPen(Qt.yellow,3,Qt.SolidLine))
